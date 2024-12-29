@@ -1,0 +1,71 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Upload, Send } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface ChatInputProps {
+  onSendMessage: (message: string) => void;
+  onFileUpload?: (file: File) => void;
+  disabled?: boolean;
+}
+
+export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputProps) => {
+  const [message, setMessage] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (message.trim()) {
+      onSendMessage(message.trim());
+      setMessage("");
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type === "application/pdf" || file.type === "text/plain") {
+        onFileUpload?.(file);
+      } else {
+        toast({
+          title: "Invalid file type",
+          description: "Only PDF and text files are supported in the free tier",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t bg-white">
+      <Input
+        type="file"
+        id="file-upload"
+        className="hidden"
+        onChange={handleFileUpload}
+        accept=".pdf,.txt"
+      />
+      <Button
+        type="button"
+        variant="outline"
+        size="icon"
+        onClick={() => document.getElementById("file-upload")?.click()}
+        disabled={disabled}
+      >
+        <Upload size={20} />
+      </Button>
+      <Input
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Type your message..."
+        className="flex-1"
+        disabled={disabled}
+      />
+      <Button type="submit" disabled={!message.trim() || disabled}>
+        <Send size={20} className="mr-2" />
+        Send
+      </Button>
+    </form>
+  );
+};
