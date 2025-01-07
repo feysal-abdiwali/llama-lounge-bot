@@ -2,6 +2,8 @@ import { useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { UpgradePrompt } from "@/components/UpgradePrompt";
+import { sendMessage } from "@/services/openRouterService";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -18,29 +20,38 @@ const Index = () => {
     },
   ]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const { toast } = useToast();
 
   const handleSendMessage = async (content: string) => {
     const userMessage = { id: Date.now().toString(), content, isBot: false };
     setMessages((prev) => [...prev, userMessage]);
     setIsProcessing(true);
 
-    // Simulate bot response
-    setTimeout(() => {
+    try {
+      const response = await sendMessage(content);
       const botMessage = {
         id: (Date.now() + 1).toString(),
-        content: "I'm a demo bot. This is a simulated response to your message: " + content,
+        content: response,
         isBot: true,
       };
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to get response from AI. Please try again.",
+        variant: "destructive",
+      });
+      console.error('Error:', error);
+    } finally {
       setIsProcessing(false);
-    }, 1000);
+    }
   };
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target?.result as string;
-      handleSendMessage(`Processing file: ${file.name}`);
+      handleSendMessage(`Processing file: ${file.name}\n\nContent: ${content}`);
     };
     reader.readAsText(file);
   };
