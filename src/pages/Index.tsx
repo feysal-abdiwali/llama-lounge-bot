@@ -6,6 +6,8 @@ import { ModelSelector } from "@/components/ModelSelector";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Message {
   id: string;
@@ -23,6 +25,7 @@ const Index = () => {
   ]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { toast } = useToast();
 
   const handleSendMessage = async (content: string) => {
@@ -60,26 +63,59 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <div className="flex-1 max-w-4xl mx-auto flex flex-col">
-        <main className="flex-1 p-4 space-y-4 overflow-y-auto">
-          <div className="mb-4">
-            <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
+    <div className="flex h-screen bg-[#1A1F2C] text-white">
+      {/* Sidebar */}
+      <div className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 bg-[#222222] border-r border-[#403E43] overflow-hidden`}>
+        <div className="p-4">
+          <h2 className="text-xl font-semibold mb-4">Chat History</h2>
+          <div className="space-y-2">
+            {messages.filter(m => !m.isBot).map((message) => (
+              <div 
+                key={message.id}
+                className="p-2 rounded hover:bg-[#403E43] cursor-pointer truncate"
+              >
+                {message.content}
+              </div>
+            ))}
           </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-[#222222] p-4 flex items-center justify-between border-b border-[#403E43]">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="text-white hover:bg-[#403E43]"
+          >
+            {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          </Button>
+          <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
+        </div>
+
+        {/* Chat Area */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <ChatMessage key={message.id} {...message} />
           ))}
           {isProcessing && (
             <ChatMessage content="Thinking..." isBot isPending />
           )}
-        </main>
-        <div className="space-y-4 p-4">
-          <UpgradePrompt />
-          <ChatInput
-            onSendMessage={handleSendMessage}
-            onFileUpload={handleFileUpload}
-            disabled={isProcessing}
-          />
+        </div>
+
+        {/* Input Area */}
+        <div className="border-t border-[#403E43] bg-[#222222]">
+          <div className="max-w-4xl mx-auto w-full">
+            <UpgradePrompt />
+            <ChatInput
+              onSendMessage={handleSendMessage}
+              onFileUpload={handleFileUpload}
+              disabled={isProcessing}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -38,7 +38,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t bg-white">
+    <form onSubmit={handleSubmit} className="flex gap-2 p-4">
       <Input
         type="file"
         id="file-upload"
@@ -52,6 +52,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         size="icon"
         onClick={() => document.getElementById("file-upload")?.click()}
         disabled={disabled}
+        className="bg-[#403E43] border-[#8E9196] hover:bg-[#4A484D] text-white"
       >
         <Upload size={20} />
       </Button>
@@ -59,10 +60,14 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message..."
-        className="flex-1"
+        className="flex-1 bg-[#403E43] border-[#8E9196] text-white placeholder:text-[#8E9196]"
         disabled={disabled}
       />
-      <Button type="submit" disabled={!message.trim() || disabled}>
+      <Button 
+        type="submit" 
+        disabled={!message.trim() || disabled}
+        className="bg-[#D6BCFA] text-[#1A1F2C] hover:bg-[#C4A3F7]"
+      >
         <Send size={20} className="mr-2" />
         Send
       </Button>
