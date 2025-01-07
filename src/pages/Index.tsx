@@ -2,8 +2,10 @@ import { useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { UpgradePrompt } from "@/components/UpgradePrompt";
+import { ModelSelector } from "@/components/ModelSelector";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
+import { FREE_TIER_MODELS } from "@/types/models";
 
 interface Message {
   id: string;
@@ -20,6 +22,7 @@ const Index = () => {
     },
   ]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
   const { toast } = useToast();
 
   const handleSendMessage = async (content: string) => {
@@ -28,7 +31,7 @@ const Index = () => {
     setIsProcessing(true);
 
     try {
-      const response = await sendMessage(content);
+      const response = await sendMessage(content, selectedModel);
       const botMessage = {
         id: (Date.now() + 1).toString(),
         content: response,
@@ -60,6 +63,9 @@ const Index = () => {
     <div className="min-h-screen bg-gray-50 flex">
       <div className="flex-1 max-w-4xl mx-auto flex flex-col">
         <main className="flex-1 p-4 space-y-4 overflow-y-auto">
+          <div className="mb-4">
+            <ModelSelector selectedModel={selectedModel} onModelChange={setSelectedModel} />
+          </div>
           {messages.map((message) => (
             <ChatMessage key={message.id} {...message} />
           ))}
