@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
-import { UpgradePrompt } from "@/components/UpgradePrompt";
 import { ModelSelector } from "@/components/ModelSelector";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
@@ -65,14 +64,14 @@ const Index = () => {
   return (
     <div className="flex h-screen bg-[#1A1F2C] text-white">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-64' : 'w-0'} transition-all duration-300 bg-[#222222] border-r border-[#403E43] overflow-hidden`}>
+      <div className={`${isSidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 bg-[#222222] border-r border-[#403E43] overflow-hidden`}>
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Chat History</h2>
+          <h2 className="text-xl font-semibold mb-4 text-[#D6BCFA]">Chat History</h2>
           <div className="space-y-2">
             {messages.filter(m => !m.isBot).map((message) => (
               <div 
                 key={message.id}
-                className="p-2 rounded hover:bg-[#403E43] cursor-pointer truncate"
+                className="p-3 rounded-lg hover:bg-[#403E43] cursor-pointer truncate text-sm transition-colors"
               >
                 {message.content}
               </div>
@@ -84,12 +83,12 @@ const Index = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-[#222222] p-4 flex items-center justify-between border-b border-[#403E43]">
+        <div className="bg-[#222222] p-4 flex items-center justify-between border-b border-[#403E43] sticky top-0 z-10">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="text-white hover:bg-[#403E43]"
+            className="text-white hover:bg-[#403E43] transition-colors"
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </Button>
@@ -107,9 +106,8 @@ const Index = () => {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-[#403E43] bg-[#222222]">
+        <div className="border-t border-[#403E43] bg-[#222222] p-4">
           <div className="max-w-4xl mx-auto w-full">
-            <UpgradePrompt />
             <ChatInput
               onSendMessage={handleSendMessage}
               onFileUpload={handleFileUpload}

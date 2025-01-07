@@ -30,7 +30,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
       } else {
         toast({
           title: "Invalid file type",
-          description: "Only PDF and text files are supported in the free tier",
+          description: "Only PDF and text files are supported",
           variant: "destructive",
         });
       }
@@ -38,7 +38,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 p-4">
+    <form onSubmit={handleSubmit} className="flex gap-3 items-center">
       <Input
         type="file"
         id="file-upload"
@@ -52,7 +52,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         size="icon"
         onClick={() => document.getElementById("file-upload")?.click()}
         disabled={disabled}
-        className="bg-[#403E43] border-[#8E9196] hover:bg-[#4A484D] text-white"
+        className="bg-[#403E43] border-[#8E9196] hover:bg-[#4A484D] text-white transition-colors"
       >
         <Upload size={20} />
       </Button>
@@ -60,13 +60,13 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your message..."
-        className="flex-1 bg-[#403E43] border-[#8E9196] text-white placeholder:text-[#8E9196]"
+        className="flex-1 bg-[#403E43] border-[#8E9196] text-white placeholder:text-[#8E9196] focus:ring-[#D6BCFA] focus:border-[#D6BCFA]"
         disabled={disabled}
       />
       <Button 
         type="submit" 
         disabled={!message.trim() || disabled}
-        className="bg-[#D6BCFA] text-[#1A1F2C] hover:bg-[#C4A3F7]"
+        className="bg-[#D6BCFA] text-[#1A1F2C] hover:bg-[#C4A3F7] transition-colors"
       >
         <Send size={20} className="mr-2" />
         Send
