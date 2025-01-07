@@ -137,7 +137,7 @@ const Index = () => {
 
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-4">
-            <h1 className="text-4xl font-bold mb-8">ChatGPT</h1>
+            <h1 className="text-4xl font-bold mb-8">Llama</h1>
             
             <div className="flex gap-3 justify-center max-w-4xl w-full mb-12">
               <div className="flex-1 flex flex-col items-center gap-3">
