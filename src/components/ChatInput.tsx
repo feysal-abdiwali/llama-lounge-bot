@@ -38,7 +38,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-3 items-center">
+    <form onSubmit={handleSubmit} className="relative flex items-center">
       <Input
         type="file"
         id="file-upload"
@@ -48,28 +48,27 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
       />
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         size="icon"
         onClick={() => document.getElementById("file-upload")?.click()}
         disabled={disabled}
-        className="bg-[#403E43] border-[#8E9196] hover:bg-[#4A484D] text-white transition-colors"
+        className="absolute left-2 text-gray-400 hover:text-white"
       >
         <Upload size={20} />
       </Button>
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message..."
-        className="flex-1 bg-[#403E43] border-[#8E9196] text-white placeholder:text-[#8E9196] focus:ring-[#D6BCFA] focus:border-[#D6BCFA]"
+        placeholder="Send a message..."
+        className="flex-1 bg-[#40414F] border-0 rounded-lg pl-12 pr-14 py-3 text-white placeholder:text-gray-400 focus:ring-0 focus:outline-none"
         disabled={disabled}
       />
       <Button 
         type="submit" 
         disabled={!message.trim() || disabled}
-        className="bg-[#D6BCFA] text-[#1A1F2C] hover:bg-[#C4A3F7] transition-colors"
+        className="absolute right-2 bg-transparent hover:bg-transparent text-gray-400 hover:text-white"
       >
-        <Send size={20} className="mr-2" />
-        Send
+        <Send size={20} />
       </Button>
     </form>
   );
