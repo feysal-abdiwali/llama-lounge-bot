@@ -64,9 +64,15 @@ const Index = () => {
   return (
     <div className="flex h-screen bg-[#1A1F2C] text-white">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-80' : 'w-0'} transition-all duration-300 bg-[#222222] border-r border-[#403E43] overflow-hidden`}>
+      <div 
+        className={`${
+          isSidebarOpen ? 'w-80' : 'w-0'
+        } transition-all duration-300 bg-[#222222] border-r border-[#403E43] overflow-hidden`}
+      >
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4 text-[#D6BCFA]">Chat History</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-[#D6BCFA]">Chat History</h2>
+          </div>
           <div className="space-y-2">
             {messages.filter(m => !m.isBot).map((message) => (
               <div 
