@@ -7,33 +7,28 @@ import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
 import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface Message {
-  id: string;
-  content: string;
-  isBot: boolean;
-}
+import { useChat } from "@/contexts/ChatContext";
 
 const Index = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { toast } = useToast();
+  const { messages, addMessageToSession, createNewSession } = useChat();
 
   const handleSendMessage = async (content: string) => {
-    const userMessage = { id: Date.now().toString(), content, isBot: false };
-    setMessages((prev) => [...prev, userMessage]);
+    const userMessage = { content, role: 'user' as const, isBot: false };
+    addMessageToSession(userMessage);
     setIsProcessing(true);
 
     try {
-      const response = await sendMessage(content, selectedModel);
+      const response = await sendMessage([...messages, userMessage], selectedModel);
       const botMessage = {
-        id: (Date.now() + 1).toString(),
         content: response,
+        role: 'assistant' as const,
         isBot: true,
       };
-      setMessages((prev) => [...prev, botMessage]);
+      addMessageToSession(botMessage);
     } catch (error) {
       toast({
         title: "Error",
@@ -85,20 +80,22 @@ const Index = () => {
           <div className="p-2">
             <button 
               className="w-full text-left px-3 py-3 rounded-lg bg-[#202123] hover:bg-[#2A2B32] text-white flex items-center gap-3 border border-white/20"
-              onClick={() => setMessages([])}
+              onClick={createNewSession}
             >
               <MessageSquarePlus size={16} />
               <span>New chat</span>
             </button>
           </div>
           
-          {messages.length === 0 && (
-            <div className="px-4 py-3 text-sm text-gray-400 italic">
-              History is temporarily unavailable.
-              <br />
-              We're working to restore this feature as soon as possible.
-            </div>
-          )}
+          <div className="px-4 py-3 text-sm text-gray-400 italic">
+            {messages.length === 0 ? (
+              <>
+                History is temporarily unavailable.
+                <br />
+                We're working to restore this feature as soon as possible.
+              </>
+            ) : null}
+          </div>
           
           <div className="space-y-2 px-2">
             {messages.filter(m => !m.isBot).map((message) => (
