@@ -14,6 +14,7 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [temporaryChat, setTemporaryChat] = useState(false);
   const { toast } = useToast();
   const { messages, addMessageToSession, createNewSession } = useChat();
 
@@ -140,7 +141,12 @@ const Index = () => {
           {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
         </Button>
 
-        <ChatHeader selectedModel={selectedModel} onModelChange={setSelectedModel} />
+        <ChatHeader 
+          selectedModel={selectedModel} 
+          onModelChange={setSelectedModel}
+          temporaryChat={temporaryChat}
+          onTemporaryChatToggle={setTemporaryChat}
+        />
 
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-4">

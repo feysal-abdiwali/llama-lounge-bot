@@ -8,7 +8,7 @@ interface ModelSelectorProps {
 
 export const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
   return (
-    <div className="w-full max-w-xs">
+    <div className="w-full">
       <Select value={selectedModel} onValueChange={onModelChange}>
         <SelectTrigger className="bg-[#202123] border-white/20 text-white">
           <SelectValue placeholder="Select a model" />
