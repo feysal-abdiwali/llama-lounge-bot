@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
-import { ModelSelector } from "@/components/ModelSelector";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
@@ -9,6 +8,7 @@ import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut }
 import { Button } from "@/components/ui/button";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
+import { ChatHeader } from "@/components/ChatHeader";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -140,6 +140,8 @@ const Index = () => {
           {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
         </Button>
 
+        <ChatHeader selectedModel={selectedModel} onModelChange={setSelectedModel} />
+
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-4">
             <h1 className="text-4xl font-bold mb-8">Llama</h1>
@@ -187,7 +189,7 @@ const Index = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto pt-10">
+          <div className="flex-1 overflow-y-auto pt-16">
             <div className="max-w-3xl mx-auto px-4 space-y-6">
               {messages.map((message) => (
                 <ChatMessage key={message.id} {...message} />

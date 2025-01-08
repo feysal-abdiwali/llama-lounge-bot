@@ -6,31 +6,28 @@ export interface LLMModel {
 
 export const FREE_TIER_MODELS: LLMModel[] = [
   {
-    id: 'meta-llama/llama-3.2-3b-instruct:free',
-    name: 'Llama 3.2 3B',
-    description: 'Fast and efficient for simple tasks'
+    id: 'gpt-3.5',
+    name: 'GPT-3.5',
+    description: 'Great for everyday tasks'
   },
   {
-    id: 'meta-llama/llama-3.2-11b-vision-instruct:free',
-    name: 'Llama 3.2 11B Vision',
-    description: 'Balanced performance with vision capabilities'
-  }
-];
-
-export const PAID_TIER_MODELS: LLMModel[] = [
-  {
-    id: 'meta-llama/llama-3.1-70b-instruct:free',
-    name: 'Llama 3.1 70B',
-    description: 'Advanced reasoning and complex tasks'
+    id: 'o1-mini',
+    name: 'o1-mini',
+    description: 'Faster at reasoning'
   },
   {
-    id: 'meta-llama/llama-3.1-405b-instruct:free',
-    name: 'Llama 3.1 405B',
-    description: 'Superior performance for demanding tasks'
+    id: 'gpt-4o',
+    name: 'GPT-4o',
+    description: 'Best for complex tasks'
   },
   {
-    id: 'meta-llama/llama-3.2-90b-vision-instruct:free',
-    name: 'Llama 3.2 90B Vision',
-    description: 'State-of-the-art with vision capabilities'
+    id: 'gpt-4o-mini',
+    name: 'GPT-4o mini',
+    description: 'Faster for everyday tasks'
+  },
+  {
+    id: 'dynamic',
+    name: 'Dynamic',
+    description: 'Use the right model from my requests'
   }
 ];
