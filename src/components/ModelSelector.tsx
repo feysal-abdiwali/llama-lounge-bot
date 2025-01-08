@@ -1,17 +1,26 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FREE_TIER_MODELS } from "@/types/models";
+import { Badge } from "@/components/ui/badge";
 
 interface ModelSelectorProps {
   selectedModel: string;
   onModelChange: (modelId: string) => void;
+  temporaryChat: boolean;
 }
 
-export const ModelSelector = ({ selectedModel, onModelChange }: ModelSelectorProps) => {
+export const ModelSelector = ({ selectedModel, onModelChange, temporaryChat }: ModelSelectorProps) => {
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <Select value={selectedModel} onValueChange={onModelChange}>
         <SelectTrigger className="bg-[#202123] border-white/20 text-white">
-          <SelectValue placeholder="Select a model" />
+          <div className="flex items-center gap-2">
+            <SelectValue placeholder="Select a model" />
+            {temporaryChat && (
+              <Badge variant="secondary" className="ml-2">
+                Temporary Chat
+              </Badge>
+            )}
+          </div>
         </SelectTrigger>
         <SelectContent className="bg-[#202123] border-white/20">
           {FREE_TIER_MODELS.map((model) => (

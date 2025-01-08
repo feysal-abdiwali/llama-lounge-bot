@@ -21,7 +21,11 @@ export const ChatHeader = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <div className="w-full max-w-xs">
-              <ModelSelector selectedModel={selectedModel} onModelChange={onModelChange} />
+              <ModelSelector 
+                selectedModel={selectedModel} 
+                onModelChange={onModelChange}
+                temporaryChat={temporaryChat}
+              />
             </div>
           </TooltipTrigger>
           <TooltipContent>
