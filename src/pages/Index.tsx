@@ -8,6 +8,7 @@ import { FREE_TIER_MODELS } from "@/types/models";
 import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useChat } from "@/contexts/ChatContext";
+import { v4 as uuidv4 } from 'uuid';
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -17,13 +18,20 @@ const Index = () => {
   const { messages, addMessageToSession, createNewSession } = useChat();
 
   const handleSendMessage = async (content: string) => {
-    const userMessage = { content, role: 'user' as const, isBot: false };
+    const userMessage = {
+      id: uuidv4(),
+      content,
+      role: 'user' as const,
+      isBot: false
+    };
+    
     addMessageToSession(userMessage);
     setIsProcessing(true);
 
     try {
       const response = await sendMessage([...messages, userMessage], selectedModel);
       const botMessage = {
+        id: uuidv4(),
         content: response,
         role: 'assistant' as const,
         isBot: true,
