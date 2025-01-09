@@ -25,6 +25,7 @@ export const ChatHeader = ({
                 selectedModel={selectedModel} 
                 onModelChange={onModelChange}
                 temporaryChat={temporaryChat}
+                onTemporaryChatToggle={onTemporaryChatToggle}
               />
             </div>
           </TooltipTrigger>
