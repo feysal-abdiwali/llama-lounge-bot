@@ -1,5 +1,4 @@
 import { ModelSelector } from "./ModelSelector";
-import { ChatToggle } from "./ChatToggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ChatHeaderProps {
@@ -16,7 +15,7 @@ export const ChatHeader = ({
   onTemporaryChatToggle 
 }: ChatHeaderProps) => {
   return (
-    <div className="fixed top-2 left-0 right-0 flex justify-center items-center space-x-4 z-10 px-4">
+    <div className="fixed top-2 left-0 right-0 flex justify-center items-center z-10 px-4">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -34,7 +33,6 @@ export const ChatHeader = ({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <ChatToggle enabled={temporaryChat} onToggle={onTemporaryChatToggle} />
     </div>
   );
 };
