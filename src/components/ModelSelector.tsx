@@ -4,15 +4,23 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { PaywallDialog } from "./PaywallDialog";
 import { useToast } from "@/hooks/use-toast";
-import { Lock } from "lucide-react";
+import { Lock, RefreshCw } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
 
 interface ModelSelectorProps {
   selectedModel: string;
   onModelChange: (modelId: string) => void;
   temporaryChat: boolean;
+  onTemporaryChatToggle: (enabled: boolean) => void;
 }
 
-export const ModelSelector = ({ selectedModel, onModelChange, temporaryChat }: ModelSelectorProps) => {
+export const ModelSelector = ({ 
+  selectedModel, 
+  onModelChange, 
+  temporaryChat,
+  onTemporaryChatToggle 
+}: ModelSelectorProps) => {
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [selectedPaidModel, setSelectedPaidModel] = useState("");
   const { toast } = useToast();
@@ -83,6 +91,22 @@ export const ModelSelector = ({ selectedModel, onModelChange, temporaryChat }: M
               </div>
             </SelectItem>
           ))}
+
+          <Separator className="my-2 bg-white/20" />
+          
+          <div className="px-3 py-2">
+            <div className="flex items-center justify-between text-white">
+              <div className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" />
+                <span className="text-sm">Temporary chat</span>
+              </div>
+              <Switch
+                checked={temporaryChat}
+                onCheckedChange={onTemporaryChatToggle}
+                className="data-[state=checked]:bg-primary"
+              />
+            </div>
+          </div>
         </SelectContent>
       </Select>
 
