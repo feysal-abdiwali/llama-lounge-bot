@@ -14,7 +14,7 @@ const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [temporaryChat, setTemporaryChat] = useState(false);
+  const [temporaryChat, setTemporaryChatToggle] = useState(false);
   const { toast } = useToast();
   const { messages, addMessageToSession, createNewSession } = useChat();
 
@@ -78,39 +78,37 @@ const Index = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-[#343541] text-white">
+    <div className="flex h-screen bg-transparent text-foreground">
       {/* Sidebar */}
       <div 
         className={`${
           isSidebarOpen ? 'w-[260px]' : 'w-0'
-        } transition-all duration-300 bg-[#202123] overflow-hidden flex flex-col`}
+        } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}
       >
         <div className="flex-1 overflow-y-auto">
           <div className="p-2">
             <button 
-              className="w-full text-left px-3 py-3 rounded-lg bg-[#202123] hover:bg-[#2A2B32] text-white flex items-center gap-3 border border-white/20"
+              className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground flex items-center gap-3 border border-gray-200 dark:border-gray-700 transition-colors duration-200"
               onClick={createNewSession}
             >
-              <MessageSquarePlus size={16} />
+              <MessageSquarePlus className="sidebar-icon" />
               <span>New chat</span>
             </button>
           </div>
           
-          <div className="px-4 py-3 text-sm text-gray-400 italic">
-            {messages.length === 0 ? (
-              <>
-                History is temporarily unavailable.
-                <br />
-                We're working to restore this feature as soon as possible.
-              </>
-            ) : null}
-          </div>
+          {messages.length === 0 && (
+            <div className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 italic bg-gray-50 dark:bg-gray-900/50 mx-2 rounded-md">
+              History is temporarily unavailable.
+              <br />
+              We're working to restore this feature.
+            </div>
+          )}
           
           <div className="space-y-2 px-2">
             {messages.filter(m => !m.isBot).map((message) => (
               <div 
                 key={message.id}
-                className="px-3 py-3 rounded-lg hover:bg-[#2A2B32] cursor-pointer truncate text-sm transition-colors"
+                className="px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer truncate text-sm transition-colors"
               >
                 {message.content}
               </div>
@@ -118,49 +116,51 @@ const Index = () => {
           </div>
         </div>
 
-        <div className="border-t border-white/20 p-2 space-y-2">
-          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-[#2A2B32] text-white flex items-center gap-3">
-            <Settings size={16} />
+        <div className="border-t border-gray-200 dark:border-gray-700 p-2 space-y-2">
+          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground flex items-center gap-3 transition-colors">
+            <Settings className="sidebar-icon" />
             <span>Settings</span>
           </button>
-          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-[#2A2B32] text-white flex items-center gap-3">
-            <LogOut size={16} />
+          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground flex items-center gap-3 transition-colors">
+            <LogOut className="sidebar-icon" />
             <span>Log out</span>
           </button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col relative bg-[#343541]">
+      <div className="flex-1 flex flex-col relative">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="absolute top-2 left-2 text-white hover:bg-[#2A2B32] z-10"
+          className="absolute top-2 left-2 text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 z-10"
         >
-          {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+          {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
 
         <ChatHeader 
           selectedModel={selectedModel} 
           onModelChange={setSelectedModel}
           temporaryChat={temporaryChat}
-          onTemporaryChatToggle={setTemporaryChat}
+          onTemporaryChatToggle={setTemporaryChatToggle}
         />
 
         {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center px-4">
-            <h1 className="text-4xl font-bold mb-8">Llama</h1>
+          <div className="flex-1 flex flex-col items-center justify-center px-4 animate-fade-up">
+            <h1 className="mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+              Llama
+            </h1>
             
-            <div className="flex gap-3 justify-center max-w-4xl w-full mb-12">
-              <div className="flex-1 flex flex-col items-center gap-3">
-                <Sun className="h-6 w-6" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full mb-12">
+              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
+                <Sun className="h-6 w-6 text-yellow-500" />
                 <h2 className="text-lg font-medium mb-2">Examples</h2>
-                <div className="space-y-3">
+                <div className="space-y-3 w-full">
                   {examples.map((example, i) => (
                     <button
                       key={i}
-                      className="w-full p-3 rounded-lg bg-[#3E3F4B] hover:bg-[#2A2B32] text-sm text-left"
+                      className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-left transition-colors"
                       onClick={() => handleSendMessage(example.text)}
                     >
                       {example.text}
@@ -169,24 +169,24 @@ const Index = () => {
                 </div>
               </div>
 
-              <div className="flex-1 flex flex-col items-center gap-3">
-                <Zap className="h-6 w-6" />
+              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
+                <Zap className="h-6 w-6 text-purple-500" />
                 <h2 className="text-lg font-medium mb-2">Capabilities</h2>
-                <div className="space-y-3">
+                <div className="space-y-3 w-full">
                   {capabilities.map((capability, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-[#3E3F4B] text-sm">
+                    <div key={i} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-sm">
                       {capability}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="flex-1 flex flex-col items-center gap-3">
-                <AlertTriangle className="h-6 w-6" />
+              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
+                <AlertTriangle className="h-6 w-6 text-orange-500" />
                 <h2 className="text-lg font-medium mb-2">Limitations</h2>
-                <div className="space-y-3">
+                <div className="space-y-3 w-full">
                   {limitations.map((limitation, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-[#3E3F4B] text-sm">
+                    <div key={i} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-sm">
                       {limitation}
                     </div>
                   ))}
@@ -208,8 +208,8 @@ const Index = () => {
         )}
 
         {/* Input Area */}
-        <div className="border-t border-white/20 bg-[#343541] p-4">
-          <div className="max-w-3xl mx-auto">
+        <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+          <div className="max-w-3xl mx-auto input-area p-2">
             <ChatInput
               onSendMessage={handleSendMessage}
               onFileUpload={handleFileUpload}

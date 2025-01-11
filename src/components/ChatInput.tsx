@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Upload, Send } from "lucide-react";
+import { Upload, Send, Smile } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface ChatInputProps {
@@ -52,23 +52,32 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         size="icon"
         onClick={() => document.getElementById("file-upload")?.click()}
         disabled={disabled}
-        className="absolute left-2 text-gray-400 hover:text-white"
+        className="absolute left-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
       >
-        <Upload size={20} />
+        <Upload className="h-5 w-5" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon"
+        disabled={disabled}
+        className="absolute left-10 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+      >
+        <Smile className="h-5 w-5" />
       </Button>
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Send a message..."
-        className="flex-1 bg-[#40414F] border-0 rounded-lg pl-12 pr-14 py-3 text-white placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+        className="flex-1 bg-transparent border-0 rounded-lg pl-20 pr-14 py-3 text-foreground placeholder:text-gray-400 focus:ring-0 focus:outline-none"
         disabled={disabled}
       />
       <Button 
         type="submit" 
         disabled={!message.trim() || disabled}
-        className="absolute right-2 bg-transparent hover:bg-transparent text-gray-400 hover:text-white"
+        className="absolute right-2 bg-transparent hover:bg-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
       >
-        <Send size={20} />
+        <Send className="h-5 w-5" />
       </Button>
     </form>
   );
