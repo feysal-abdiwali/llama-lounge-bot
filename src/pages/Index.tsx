@@ -11,6 +11,7 @@ import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
 import { ChatHeader } from "@/components/ChatHeader";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { ModelSelector } from "@/components/ModelSelector";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -151,7 +152,13 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col relative">
-        <div className="absolute top-2 right-2 flex items-center gap-2 z-10">
+        <div className="absolute top-2 right-2 flex items-center gap-4 z-10">
+          <ModelSelector 
+            selectedModel={selectedModel}
+            onModelChange={setSelectedModel}
+            temporaryChat={temporaryChat}
+            onTemporaryChatToggle={setTemporaryChatToggle}
+          />
           <ThemeToggle />
         </div>
 
@@ -170,13 +177,6 @@ const Index = () => {
             Llama Lounge
           </h1>
         </div>
-
-        <ChatHeader 
-          selectedModel={selectedModel} 
-          onModelChange={setSelectedModel}
-          temporaryChat={temporaryChat}
-          onTemporaryChatToggle={setTemporaryChatToggle}
-        />
 
         {messages.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center px-4 animate-fade-up">
