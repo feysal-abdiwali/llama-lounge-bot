@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { sendMessage } from "@/services/openRouterService";
@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
 import { ChatHeader } from "@/components/ChatHeader";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SearchBar } from "@/components/SearchBar";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -77,14 +79,39 @@ const Index = () => {
     "Limited knowledge of world and events after 2021"
   ];
 
+  // Add keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
+        if (input?.value) {
+          handleSendMessage(input.value);
+        }
+      }
+      if (e.key === 'Escape') {
+        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
+        if (input) {
+          input.value = '';
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
+  const handleSearch = (query: string) => {
+    // Filter examples, capabilities, and limitations based on search query
+    // This is a placeholder - implement actual search logic as needed
+    console.log('Searching for:', query);
+  };
+
   return (
     <div className="flex h-screen bg-transparent text-foreground">
       {/* Sidebar */}
-      <div 
-        className={`${
-          isSidebarOpen ? 'w-[260px]' : 'w-0'
-        } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}
-      >
+      <div className={`${
+        isSidebarOpen ? 'w-[260px]' : 'w-0'
+      } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}>
         <div className="flex-1 overflow-y-auto">
           <div className="p-2">
             <button 
@@ -130,6 +157,11 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col relative">
+        <div className="absolute top-2 right-2 flex items-center gap-2 z-10">
+          <SearchBar onSearch={handleSearch} />
+          <ThemeToggle />
+        </div>
+
         <Button
           variant="ghost"
           size="icon"
@@ -138,6 +170,13 @@ const Index = () => {
         >
           {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
+
+        {/* Brand Logo */}
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
+          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+            Llama Lounge
+          </h1>
+        </div>
 
         <ChatHeader 
           selectedModel={selectedModel} 
