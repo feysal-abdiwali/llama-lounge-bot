@@ -3,7 +3,7 @@ import { ChatInput } from "@/components/ChatInput";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, MessageSquarePlus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
