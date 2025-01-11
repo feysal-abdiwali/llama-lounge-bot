@@ -4,13 +4,12 @@ import { ChatInput } from "@/components/ChatInput";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
-import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut } from "lucide-react";
+import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
 import { ChatHeader } from "@/components/ChatHeader";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { SearchBar } from "@/components/SearchBar";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -100,12 +99,6 @@ const Index = () => {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, []);
 
-  const handleSearch = (query: string) => {
-    // Filter examples, capabilities, and limitations based on search query
-    // This is a placeholder - implement actual search logic as needed
-    console.log('Searching for:', query);
-  };
-
   return (
     <div className="flex h-screen bg-transparent text-foreground">
       {/* Sidebar */}
@@ -158,7 +151,6 @@ const Index = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col relative">
         <div className="absolute top-2 right-2 flex items-center gap-2 z-10">
-          <SearchBar onSearch={handleSearch} />
           <ThemeToggle />
         </div>
 
@@ -249,6 +241,17 @@ const Index = () => {
         {/* Input Area */}
         <div className="border-t border-gray-200 dark:border-gray-700 p-4">
           <div className="max-w-3xl mx-auto input-area p-2">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <RefreshCw className="h-4 w-4" />
+                <span>Temporary chat</span>
+                <Switch
+                  checked={temporaryChat}
+                  onCheckedChange={setTemporaryChatToggle}
+                  className="data-[state=checked]:bg-primary"
+                />
+              </div>
+            </div>
             <ChatInput
               onSendMessage={handleSendMessage}
               onFileUpload={handleFileUpload}

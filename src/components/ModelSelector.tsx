@@ -4,9 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { PaywallDialog } from "./PaywallDialog";
 import { useToast } from "@/hooks/use-toast";
-import { Lock, RefreshCw } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Separator } from "@/components/ui/separator";
+import { Lock } from "lucide-react";
 
 interface ModelSelectorProps {
   selectedModel: string;
@@ -18,8 +16,7 @@ interface ModelSelectorProps {
 export const ModelSelector = ({ 
   selectedModel, 
   onModelChange, 
-  temporaryChat,
-  onTemporaryChatToggle 
+  temporaryChat
 }: ModelSelectorProps) => {
   const [paywallOpen, setPaywallOpen] = useState(false);
   const [selectedPaidModel, setSelectedPaidModel] = useState("");
@@ -36,7 +33,6 @@ export const ModelSelector = ({
   };
 
   const handlePurchase = () => {
-    // This would be connected to your payment processing system
     toast({
       title: "Purchase successful!",
       description: "You now have access to premium models.",
@@ -91,22 +87,6 @@ export const ModelSelector = ({
               </div>
             </SelectItem>
           ))}
-
-          <Separator className="my-2 bg-white/20" />
-          
-          <div className="px-3 py-2">
-            <div className="flex items-center justify-between text-white">
-              <div className="flex items-center gap-2">
-                <RefreshCw className="h-4 w-4" />
-                <span className="text-sm">Temporary chat</span>
-              </div>
-              <Switch
-                checked={temporaryChat}
-                onCheckedChange={onTemporaryChatToggle}
-                className="data-[state=checked]:bg-primary"
-              />
-            </div>
-          </div>
         </SelectContent>
       </Select>
 
