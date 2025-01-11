@@ -1,17 +1,15 @@
-import { useState, useEffect } from "react";
-import { ChatMessage } from "@/components/ChatMessage";
+import { useState } from "react";
 import { ChatInput } from "@/components/ChatInput";
 import { sendMessage } from "@/services/openRouterService";
 import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
-import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
-import { ChatHeader } from "@/components/ChatHeader";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { ModelSelector } from "@/components/ModelSelector";
+import { Welcome } from "@/components/Welcome";
+import { ChatArea } from "@/components/ChatArea";
+import { Header } from "@/components/Header";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -62,45 +60,6 @@ const Index = () => {
     reader.readAsText(file);
   };
 
-  const examples = [
-    { text: '"Explain quantum computing in simple terms" →', icon: Sun },
-    { text: '"Got any creative ideas for a 10 year old\'s birthday?" →', icon: Zap },
-    { text: '"How do I make an HTTP request in JavaScript?" →', icon: AlertTriangle },
-  ];
-
-  const capabilities = [
-    "Remembers what user said earlier in the conversation",
-    "Allows user to provide follow-up corrections",
-    "Trained to decline inappropriate requests"
-  ];
-
-  const limitations = [
-    "May occasionally generate incorrect information",
-    "May occasionally produce harmful instructions or biased content",
-    "Limited knowledge of world and events after 2021"
-  ];
-
-  // Add keyboard shortcuts
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
-        if (input?.value) {
-          handleSendMessage(input.value);
-        }
-      }
-      if (e.key === 'Escape') {
-        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
-        if (input) {
-          input.value = '';
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
-
   return (
     <div className="flex h-screen bg-transparent text-foreground">
       {/* Sidebar */}
@@ -137,106 +96,23 @@ const Index = () => {
             ))}
           </div>
         </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-700 p-2 space-y-2">
-          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground flex items-center gap-3 transition-colors">
-            <Settings className="sidebar-icon" />
-            <span>Settings</span>
-          </button>
-          <button className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-foreground flex items-center gap-3 transition-colors">
-            <LogOut className="sidebar-icon" />
-            <span>Log out</span>
-          </button>
-        </div>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col relative">
-        <div className="absolute top-2 right-2 flex items-center gap-4 z-10">
-          <ModelSelector 
-            selectedModel={selectedModel}
-            onModelChange={setSelectedModel}
-            temporaryChat={temporaryChat}
-            onTemporaryChatToggle={setTemporaryChatToggle}
-          />
-          <ThemeToggle />
-        </div>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="absolute top-2 left-2 text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 z-10"
-        >
-          {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
-
-        {/* Brand Logo */}
-        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
-          <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-            Llama Lounge
-          </h1>
-        </div>
+        <Header 
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+          selectedModel={selectedModel}
+          onModelChange={setSelectedModel}
+          temporaryChat={temporaryChat}
+          onTemporaryChatToggle={setTemporaryChatToggle}
+        />
 
         {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center px-4 animate-fade-up">
-            <h1 className="mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-              Llama
-            </h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full mb-12">
-              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
-                <Sun className="h-6 w-6 text-yellow-500" />
-                <h2 className="text-lg font-medium mb-2">Examples</h2>
-                <div className="space-y-3 w-full">
-                  {examples.map((example, i) => (
-                    <button
-                      key={i}
-                      className="w-full p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm text-left transition-colors"
-                      onClick={() => handleSendMessage(example.text)}
-                    >
-                      {example.text}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
-                <Zap className="h-6 w-6 text-purple-500" />
-                <h2 className="text-lg font-medium mb-2">Capabilities</h2>
-                <div className="space-y-3 w-full">
-                  {capabilities.map((capability, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-sm">
-                      {capability}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center gap-3 card-hover p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl">
-                <AlertTriangle className="h-6 w-6 text-orange-500" />
-                <h2 className="text-lg font-medium mb-2">Limitations</h2>
-                <div className="space-y-3 w-full">
-                  {limitations.map((limitation, i) => (
-                    <div key={i} className="p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50 text-sm">
-                      {limitation}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <Welcome onExampleClick={handleSendMessage} />
         ) : (
-          <div className="flex-1 overflow-y-auto pt-16">
-            <div className="max-w-3xl mx-auto px-4 space-y-6">
-              {messages.map((message) => (
-                <ChatMessage key={message.id} {...message} />
-              ))}
-              {isProcessing && (
-                <ChatMessage content="Thinking..." isBot isPending />
-              )}
-            </div>
-          </div>
+          <ChatArea messages={messages} isProcessing={isProcessing} />
         )}
 
         {/* Input Area */}
