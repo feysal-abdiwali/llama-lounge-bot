@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { FREE_TIER_MODELS } from "@/types/models";
 import { Menu, X, Sun, Zap, AlertTriangle, MessageSquarePlus, Settings, LogOut, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { useChat } from "@/contexts/ChatContext";
 import { v4 as uuidv4 } from 'uuid';
 import { ChatHeader } from "@/components/ChatHeader";
