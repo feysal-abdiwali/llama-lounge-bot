@@ -67,7 +67,11 @@ const Index = () => {
       {/* Sidebar */}
       <div 
         className={`${
-          isSidebarOpen ? (isMobile ? 'w-full fixed inset-0 z-50' : 'w-[260px]') : 'w-0'
+          isSidebarOpen 
+            ? (isMobile 
+                ? 'w-[280px] fixed left-0 top-0 bottom-0 z-50' 
+                : 'w-[260px]') 
+            : 'w-0'
         } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}
       >
         <div className="flex-1 overflow-y-auto">
