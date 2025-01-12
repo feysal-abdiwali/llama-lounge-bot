@@ -54,13 +54,13 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         disabled={disabled}
         className="absolute left-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
       >
-        <Upload className="h-5 w-5" />
+        <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
       <Input
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Send a message..."
-        className="flex-1 bg-transparent border-0 rounded-lg pl-12 pr-14 py-3 text-foreground placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+        className="flex-1 bg-transparent border-0 rounded-lg pl-10 sm:pl-12 pr-12 sm:pr-14 py-2 sm:py-3 text-sm sm:text-base text-foreground placeholder:text-gray-400 focus:ring-0 focus:outline-none"
         disabled={disabled}
       />
       <Button 
@@ -68,7 +68,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         disabled={!message.trim() || disabled}
         className="absolute right-2 bg-transparent hover:bg-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
       >
-        <Send className="h-5 w-5" />
+        <Send className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
     </form>
   );

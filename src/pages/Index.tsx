@@ -10,14 +10,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { Welcome } from "@/components/Welcome";
 import { ChatArea } from "@/components/ChatArea";
 import { Header } from "@/components/Header";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedModel, setSelectedModel] = useState(FREE_TIER_MODELS[0].id);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(!useIsMobile());
   const [temporaryChat, setTemporaryChatToggle] = useState(false);
   const { toast } = useToast();
   const { messages, addMessageToSession, createNewSession } = useChat();
+  const isMobile = useIsMobile();
 
   const handleSendMessage = async (content: string) => {
     const userMessage = {
@@ -63,9 +65,11 @@ const Index = () => {
   return (
     <div className="flex h-screen bg-transparent text-foreground">
       {/* Sidebar */}
-      <div className={`${
-        isSidebarOpen ? 'w-[260px]' : 'w-0'
-      } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}>
+      <div 
+        className={`${
+          isSidebarOpen ? (isMobile ? 'w-full fixed inset-0 z-50' : 'w-[260px]') : 'w-0'
+        } transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm overflow-hidden flex flex-col border-r border-gray-200 dark:border-gray-700`}
+      >
         <div className="flex-1 overflow-y-auto">
           <div className="p-2">
             <button 
@@ -121,7 +125,7 @@ const Index = () => {
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <RefreshCw className="h-4 w-4" />
-                <span>Temporary chat</span>
+                <span className="hidden sm:inline">Temporary chat</span>
                 <Switch
                   checked={temporaryChat}
                   onCheckedChange={setTemporaryChatToggle}
