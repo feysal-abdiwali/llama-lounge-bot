@@ -21,31 +21,34 @@ export const Header = ({
   onTemporaryChatToggle
 }: HeaderProps) => {
   return (
-    <>
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="fixed top-4 left-4 text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 z-[60] bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm"
-      >
-        {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </Button>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+      <div className="flex items-center justify-between px-4 h-16">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="text-foreground hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+          <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
+            Llama Lounge
+          </h1>
+        </div>
 
-      <div className="absolute top-2 right-2 flex items-center gap-4 z-10">
-        <ModelSelector 
-          selectedModel={selectedModel}
-          onModelChange={onModelChange}
-          temporaryChat={temporaryChat}
-          onTemporaryChatToggle={onTemporaryChatToggle}
-        />
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:block">
+            <ModelSelector 
+              selectedModel={selectedModel}
+              onModelChange={onModelChange}
+              temporaryChat={temporaryChat}
+              onTemporaryChatToggle={onTemporaryChatToggle}
+            />
+          </div>
+          <ThemeToggle />
+        </div>
       </div>
-
-      <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
-        <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">
-          Llama Lounge
-        </h1>
-      </div>
-    </>
+    </header>
   );
 };

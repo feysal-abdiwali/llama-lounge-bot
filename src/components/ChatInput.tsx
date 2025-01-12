@@ -38,7 +38,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative flex items-center">
+    <form onSubmit={handleSubmit} className="relative flex items-center gap-2">
       <Input
         type="file"
         id="file-upload"
@@ -52,7 +52,7 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         size="icon"
         onClick={() => document.getElementById("file-upload")?.click()}
         disabled={disabled}
-        className="absolute left-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        className="shrink-0"
       >
         <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
@@ -60,13 +60,15 @@ export const ChatInput = ({ onSendMessage, onFileUpload, disabled }: ChatInputPr
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Send a message..."
-        className="flex-1 bg-transparent border-0 rounded-lg pl-10 sm:pl-12 pr-12 sm:pr-14 py-2 sm:py-3 text-sm sm:text-base text-foreground placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+        className="flex-1 bg-transparent border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
         disabled={disabled}
       />
       <Button 
         type="submit" 
         disabled={!message.trim() || disabled}
-        className="absolute right-2 bg-transparent hover:bg-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        variant="ghost"
+        size="icon"
+        className="shrink-0"
       >
         <Send className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
