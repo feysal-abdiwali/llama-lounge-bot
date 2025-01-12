@@ -26,7 +26,7 @@ export const Header = ({
         variant="ghost"
         size="icon"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="fixed top-2 left-2 text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 z-[60]"
+        className="fixed top-4 left-4 text-foreground hover:bg-gray-100 dark:hover:bg-gray-700 z-[60] bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm"
       >
         {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </Button>
