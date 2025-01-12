@@ -1,9 +1,14 @@
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const OPENROUTER_API_KEY = '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';
 
 import { Message } from '@/types/chat';
 
 export const sendMessage = async (messages: Message[], modelId: string) => {
+  const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+  
+  if (!OPENROUTER_API_KEY) {
+    throw new Error('OpenRouter API key not found. Please add it in the project settings.');
+  }
+
   const formattedMessages = messages.map(msg => ({
     role: msg.role,
     content: msg.content
@@ -23,7 +28,8 @@ export const sendMessage = async (messages: Message[], modelId: string) => {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to get response from OpenRouter');
+    const errorData = await response.text();
+    throw new Error(`Failed to get response from OpenRouter: ${errorData}`);
   }
 
   const data = await response.json();
